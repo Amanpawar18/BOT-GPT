@@ -4,6 +4,7 @@ import { ConversationsService } from './conversations.service';
 import { Conversation } from './conversation.entity';
 import { Message } from './message.entity';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { jest } from '@jest/globals';
 
 const mockConv = {
   id: 'c-1',
@@ -198,3 +199,7 @@ describe('ConversationsService', () => {
     });
   });
 });
+function expect(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
+

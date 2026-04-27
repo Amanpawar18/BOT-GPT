@@ -141,7 +141,10 @@ describe('AiService', () => {
       mockStream.mockRejectedValue(new Error('persistent error'));
 
       await expect(async () => {
-        for await (const _ of service.streamOpenChat([], 'Hi?')) { /* consume */ }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of service.streamOpenChat([], 'Hi?')) {
+          /* consume */
+        }
       }).rejects.toThrow('persistent error');
       jest.restoreAllMocks();
 
@@ -290,6 +293,7 @@ describe('AiService', () => {
       const [[messages]] = mockInvoke.mock.calls as [
         [Array<{ content: string }>],
       ][];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       const combinedContent = messages.map((m) => m.content).join(' ');
       expect(combinedContent).toContain('First message');
       expect(combinedContent).toContain('First reply');

@@ -77,11 +77,14 @@ export class DocumentsService {
         r2_url: r2Url,
       }),
     );
-    void this.processDocument(doc.id, conversationId, file.originalname, file.buffer).catch(
-      (err: unknown) => {
-        this.logger.error(`processDocument failed for ${doc.id}`, String(err));
-      },
-    );
+    void this.processDocument(
+      doc.id,
+      conversationId,
+      file.originalname,
+      file.buffer,
+    ).catch((err: unknown) => {
+      this.logger.error(`processDocument failed for ${doc.id}`, String(err));
+    });
     return doc;
   }
 

@@ -99,9 +99,9 @@ export class ConversationsController {
       req.user.id,
     );
     if (dailyUsed >= dailyLimit) {
-      res
-        .status(429)
-        .json({ error: `Daily limit of ${dailyLimit.toLocaleString()} tokens reached. Resets at midnight UTC.` });
+      res.status(429).json({
+        error: `Daily limit of ${dailyLimit.toLocaleString()} tokens reached. Resets at midnight UTC.`,
+      });
       return;
     }
 
@@ -141,7 +141,9 @@ export class ConversationsController {
       window = this.conversationsService.buildContextWindow(messages, budget);
     }
 
-    this.logger.debug(`Context window for conversation ${id}: ${window.map((m) => `${m.role}: ${m.content}`).join(' | ')}`);
+    this.logger.debug(
+      `Context window for conversation ${id}: ${window.map((m) => `${m.role}: ${m.content}`).join(' | ')}`,
+    );
 
     const userTokens = this.aiService.estimateTokens(dto.content);
     await this.conversationsService.saveMessage(
