@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+apps/backend/.env
+apps/frontend/.env.local
+*.env.local
+.DS_Store
+coverage/
+.superpowers
+docs/superpowers/
