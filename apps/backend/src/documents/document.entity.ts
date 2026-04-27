@@ -13,9 +13,6 @@ export class Document {
   @Column()
   user_id: string;
 
-  @Column()
-  conversation_id: string;
-
   @Column({ nullable: true })
   filename: string;
 

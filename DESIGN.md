@@ -114,18 +114,26 @@ messages (
   role            TEXT NOT NULL,         -- 'user' | 'assistant'
   content         TEXT NOT NULL,
   token_count     INT,                   -- per-message token estimate
+  sources         JSONB,                 -- [{ documentId, filename }] — RAG citations
   created_at      TIMESTAMPTZ DEFAULT now()
 )
 
--- Documents (RAG knowledge base)
+-- Documents (user library — not tied to a conversation)
 documents (
-  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id         UUID REFERENCES users(id) ON DELETE CASCADE,
-  conversation_id UUID NOT NULL,
-  filename        TEXT,
-  r2_url          TEXT,
-  status          TEXT DEFAULT 'processing',  -- 'processing' | 'ready' | 'failed'
-  created_at      TIMESTAMPTZ DEFAULT now()
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    UUID REFERENCES users(id) ON DELETE CASCADE,
+  filename   TEXT,
+  r2_url     TEXT,
+  status     TEXT DEFAULT 'processing',  -- 'processing' | 'ready' | 'failed'
+  created_at TIMESTAMPTZ DEFAULT now()
+)
+
+-- Many-to-many: documents attached to conversations
+conversation_documents (
+  conversation_id UUID REFERENCES conversations(id) ON DELETE CASCADE,
+  document_id     UUID REFERENCES documents(id)     ON DELETE CASCADE,
+  attached_at     TIMESTAMPTZ DEFAULT now(),
+  PRIMARY KEY (conversation_id, document_id)
 )
 
 -- Vector embeddings (managed by LangChain PGVectorStore)
@@ -133,7 +141,7 @@ doc_embeddings (
   id       UUID PRIMARY KEY,
   content  TEXT,
   vector   VECTOR(768),
-  metadata JSONB   -- { document_id, conversation_id, filename }
+  metadata JSONB   -- { document_id, filename }
 )
 CREATE INDEX ON doc_embeddings USING ivfflat (vector vector_cosine_ops);
 ```
@@ -210,17 +218,33 @@ On LLM error:
   data: {"error":"LLM unavailable"}
 ```
 
-**Documents**
+**Documents (library)**
 ```
-POST /documents/:conversationId
+POST /documents
 Body:    multipart/form-data  { file: <PDF, max 10 MB> }
 201:     { "id": "uuid", "filename": "paper.pdf", "status": "processing" }
 
 GET /documents
 200:     [ { "id": "uuid", "filename": "...", "status": "ready", ... } ]
 
+GET /documents/:id
+200:     { "id": "uuid", "filename": "...", "r2_url": "...", ... }
+
 DELETE /documents/:id
-204:     (no body — also deletes embeddings from doc_embeddings)
+204:     (no body — also deletes R2 object and all doc_embeddings chunks)
+```
+
+**Conversation documents**
+```
+GET /conversations/:id/documents
+200:     [ { "id": "uuid", "filename": "...", ... } ]
+
+POST /conversations/:id/documents/:docId
+204:     (attaches existing library document to this conversation)
+409:     { "message": "Document already attached" }
+
+DELETE /conversations/:id/documents/:docId
+204:     (detaches document; does not delete the document or its embeddings)
 ```
 
 **Health**
@@ -305,18 +329,28 @@ Using only the context above, answer:
 <user question>
 ```
 
-Top-5 most semantically similar chunks are retrieved from `doc_embeddings` filtered by `conversation_id`, so documents from other conversations never contaminate the context.
+The retrieval runs a **parallel similarity search per attached document ID**:
+
+```typescript
+const attached = await documentsService.getAttachedDocuments(conversationId);
+const documentIds = attached.map(r => r.document_id);
+const perDoc = Math.max(1, Math.ceil(topK / documentIds.length));
+const nested = await Promise.all(
+  documentIds.map(id => vectorStore.similaritySearch(query, perDoc, { document_id: id }))
+);
+return nested.flat().slice(0, topK);
+```
+
+Filtering by `document_id` (not `conversation_id`) means documents can be shared across conversations without duplication in the vector store. Each attached document contributes proportionally to the top-K budget.
 
 ### 4.5 Token Estimation
 
-Token counts are estimated synchronously using a SentencePiece-calibrated approximation:
+Token counts are estimated synchronously:
 
 ```typescript
-// ASCII chars tokenize at ~4 chars/token for English prose.
-// Non-ASCII (CJK, emoji) tokenize more heavily at ~1.5 chars/token.
-const nonAscii = (text.match(/[^\x00-\x7F]/g) ?? []).length;
-const ascii = text.length - nonAscii;
-return Math.ceil(ascii / 4 + nonAscii / 1.5);
+estimateTokens(text: string): number {
+  return Math.ceil(text.length / 4);
+}
 ```
 
 This is used for:
@@ -463,11 +497,15 @@ User uploads PDF
       ▼
 DocumentsService.create()
   → upload raw file to Cloudflare R2
-  → read file buffer
+  → parse PDF buffer (pdf-parse)
   → RecursiveCharacterTextSplitter (1 000 chars, 200 overlap)
   → GoogleGenerativeAIEmbeddings.embedDocuments()
-  → PGVectorStore.addDocuments()   ← stored with { document_id, conversation_id, filename }
+  → PGVectorStore.addDocuments()   ← stored with metadata: { document_id, filename }
   → document.status = 'ready'
+
+User attaches document to a RAG conversation
+  → POST /conversations/:id/documents/:docId
+  → inserts row in conversation_documents (conversation_id, document_id)
 
 User sends message in RAG conversation
       │
@@ -477,10 +515,13 @@ ConversationsController.sendMessage()
   → build context window per strategy
   │
   ▼
-AiService.retrieveRelevantDocs(conversationId, query, topK=5)
-  → embed query with GoogleGenerativeAIEmbeddings
-  → PGVectorStore.similaritySearch()  ← cosine distance, filtered by conversation_id
-  → returns top-5 text chunks + filenames
+documentsService.getAttachedDocuments(conversationId)
+  → returns document_ids attached to this conversation
+  │
+  ▼
+AiService.retrieveRelevantDocs(documentIds[], query, topK=5)
+  → parallel similaritySearch per document_id
+  → merged, sliced to topK chunks
   │
   ▼
 AiService.streamRagChat(window, query, sources)
@@ -491,7 +532,8 @@ AiService.streamRagChat(window, query, sources)
   ▼
 Done event:
   { done: true, userTokens, assistantTokens, sources: [{ documentId, filename, content }] }
-  → client displays source filenames as attribution badges
+  → sources persisted as JSONB on the assistant message
+  → client renders source filename badges below the response
 ```
 
-This grounds the LLM answer entirely in the uploaded document rather than its training data, which is the core value proposition of RAG.
+This grounds the LLM answer entirely in the attached documents rather than its training data, which is the core value proposition of RAG.

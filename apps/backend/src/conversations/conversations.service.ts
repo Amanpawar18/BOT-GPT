@@ -74,12 +74,14 @@ export class ConversationsService {
     role: 'user' | 'assistant',
     content: string,
     tokenCount = 0,
+    sources?: Array<{ documentId: string; filename: string }>,
   ): Promise<Message> {
     const msg = this.msgRepo.create({
       conversation_id: convId,
       role,
       content,
       token_count: tokenCount,
+      sources: sources ?? null,
     });
     const saved = await this.msgRepo.save(msg);
     await this.convRepo.increment({ id: convId }, 'token_count', tokenCount);

@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Trash2, MessageSquare, FileSearch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -69,22 +68,19 @@ export default function ConversationsPage() {
     <div className="flex flex-col h-full">
       <header className="px-6 py-4 border-b border-border flex items-center justify-between shrink-0">
         <div>
-          <h1 className="text-lg font-semibold text-foreground">
-            Conversations
-          </h1>
+          <h1 className="text-lg font-semibold text-foreground">Conversations</h1>
           <p className="text-sm text-muted-foreground">
-            {conversations.length} conversation
-            {conversations.length !== 1 ? 's' : ''}
+            {conversations.length} conversation{conversations.length !== 1 ? 's' : ''}
           </p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90 gap-1.5">
+            <Button className="gap-1.5">
               <Plus className="h-4 w-4" />
               New chat
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-zinc-900 border-zinc-700">
+          <DialogContent className="bg-card border-border">
             <DialogHeader>
               <DialogTitle>New conversation</DialogTitle>
             </DialogHeader>
@@ -97,19 +93,16 @@ export default function ConversationsPage() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. Research assistant"
-                  className="bg-zinc-800 border-zinc-700"
+                  className="bg-background border-border"
                 />
               </div>
               <div className="space-y-1.5">
                 <Label>Mode</Label>
-                <Select
-                  value={newMode}
-                  onValueChange={(v) => setNewMode(v as 'open' | 'rag')}
-                >
-                  <SelectTrigger className="bg-zinc-800 border-zinc-700">
+                <Select value={newMode} onValueChange={(v) => setNewMode(v as 'open' | 'rag')}>
+                  <SelectTrigger className="bg-background border-border">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-zinc-800 border-zinc-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="open">Open chat</SelectItem>
                     <SelectItem value="rag">RAG (docs)</SelectItem>
                   </SelectContent>
@@ -121,10 +114,10 @@ export default function ConversationsPage() {
                   value={newStrategy}
                   onValueChange={(v) => setNewStrategy(v as 'sliding_window' | 'summarization')}
                 >
-                  <SelectTrigger className="bg-zinc-800 border-zinc-700">
+                  <SelectTrigger className="bg-background border-border">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-zinc-800 border-zinc-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="sliding_window">Sliding window</SelectItem>
                     <SelectItem value="summarization">Summarization</SelectItem>
                   </SelectContent>
@@ -136,19 +129,10 @@ export default function ConversationsPage() {
                 </p>
               </div>
               <div className="flex gap-2 pt-1">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 border-zinc-700"
-                  onClick={() => setOpen(false)}
-                >
+                <Button type="button" variant="outline" className="flex-1" onClick={() => setOpen(false)}>
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={creating || !newTitle.trim()}
-                  className="flex-1 bg-primary hover:bg-primary/90"
-                >
+                <Button type="submit" disabled={creating || !newTitle.trim()} className="flex-1">
                   {creating ? 'Creating…' : 'Create'}
                 </Button>
               </div>
@@ -161,21 +145,14 @@ export default function ConversationsPage() {
         {loading ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-xl bg-zinc-800" />
+              <Skeleton key={i} className="h-16 w-full rounded-xl bg-card" />
             ))}
           </div>
         ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-60 gap-4">
             <MessageSquare className="h-10 w-10 text-muted-foreground" />
-            <p className="text-muted-foreground text-sm">
-              No conversations yet
-            </p>
-            <Button
-              onClick={() => setOpen(true)}
-              className="bg-primary hover:bg-primary/90"
-            >
-              Start your first chat
-            </Button>
+            <p className="text-muted-foreground text-sm">No conversations yet</p>
+            <Button onClick={() => setOpen(true)}>Start your first chat</Button>
           </div>
         ) : (
           <ul className="space-y-2">
@@ -183,27 +160,19 @@ export default function ConversationsPage() {
               <li key={conv.id}>
                 <a
                   href={`/conversations/${conv.id}`}
-                  className="flex items-center justify-between px-4 py-3.5 bg-zinc-900 border border-border rounded-xl hover:border-zinc-600 transition-colors group"
+                  className="flex items-center justify-between px-4 py-3.5 bg-card border border-border rounded-xl hover:border-zinc-600 transition-colors group"
                 >
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2.5">
                       <p className="font-medium text-foreground truncate text-sm">
                         {conv.title || 'Untitled'}
                       </p>
-                      <Badge
-                        variant="outline"
-                        className={
-                          conv.mode === 'rag'
-                            ? 'border-purple-700 text-purple-400 text-[10px]'
-                            : 'border-zinc-600 text-zinc-400 text-[10px]'
-                        }
-                      >
-                        {conv.mode === 'rag' ? (
-                          <><FileSearch className="h-2.5 w-2.5 mr-1" />RAG</>
-                        ) : (
-                          'Chat'
-                        )}
-                      </Badge>
+                      {conv.mode === 'rag' && (
+                        <span className="text-[10px] text-zinc-500 font-medium flex items-center gap-1">
+                          <FileSearch className="h-2.5 w-2.5" />
+                          RAG
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {new Date(conv.updated_at).toLocaleDateString()}

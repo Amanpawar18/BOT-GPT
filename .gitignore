@@ -8,3 +8,4 @@ apps/frontend/.env.local
 coverage/
 .superpowers
 docs/superpowers/
+.playwright-mcp/

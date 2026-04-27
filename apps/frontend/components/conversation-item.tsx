@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Conversation } from '@/lib/api';
 
@@ -16,17 +17,18 @@ export function ConversationItem({ conv }: Props) {
     <Link
       href={`/conversations/${conv.id}`}
       className={cn(
-        'flex items-center gap-2 px-3 py-2 rounded-lg text-sm truncate transition-colors',
+        'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm truncate transition-colors',
         isActive
-          ? 'bg-zinc-800 text-white border-l-2 border-primary shadow-[0_0_8px_rgba(124,58,237,0.3)]'
-          : 'text-muted-foreground hover:bg-zinc-800/60 hover:text-foreground',
+          ? 'bg-zinc-800/60 text-white'
+          : 'text-zinc-300 hover:bg-zinc-800/40 hover:text-white',
       )}
     >
-      <span className="truncate">{conv.title || 'Untitled'}</span>
+      <MessageSquare
+        className={cn('h-3.5 w-3.5 shrink-0', isActive ? 'text-white' : 'text-zinc-300')}
+      />
+      <span className="truncate flex-1">{conv.title || 'Untitled'}</span>
       {conv.mode === 'rag' && (
-        <span className="ml-auto shrink-0 text-[10px] text-purple-400 font-medium">
-          RAG
-        </span>
+        <span className="ml-auto shrink-0 text-[10px] text-zinc-500 font-medium">RAG</span>
       )}
     </Link>
   );

@@ -33,43 +33,24 @@
 :root {
   --background: #09090b;
   --foreground: #fafafa;
-  --card: #18181b;
+  --card: #111114;
   --card-foreground: #fafafa;
-  --popover: #18181b;
+  --popover: #111114;
   --popover-foreground: #fafafa;
-  --primary: #7c3aed;
-  --primary-foreground: #fafafa;
-  --secondary: #27272a;
+  --primary: #e4e4e7;
+  --primary-foreground: #09090b;
+  --secondary: #1f1f22;
   --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
+  --muted: #1f1f22;
+  --muted-foreground: #71717a;
+  --accent: #1f1f22;
   --accent-foreground: #fafafa;
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #7c3aed;
+  --border: #1f1f22;
+  --input: #1f1f22;
+  --ring: #e4e4e7;
   --radius: 0.5rem;
-}
-
-@keyframes gradient-x {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-}
-
-.animate-gradient-x {
-  background-size: 200% auto;
-  animation: gradient-x 3s linear infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.animate-pulse-dot {
-  animation: pulse-dot 1.5s ease-in-out infinite;
 }
 
 * {
@@ -80,3 +61,66 @@ body {
   background-color: var(--background);
   color: var(--foreground);
 }
+
+/* Markdown prose styles scoped to assistant messages */
+.prose-chat {
+  line-height: 1.65;
+  word-break: break-word;
+}
+.prose-chat p { margin: 0 0 0.65em; }
+.prose-chat p:last-child { margin-bottom: 0; }
+.prose-chat h1,.prose-chat h2,.prose-chat h3,
+.prose-chat h4,.prose-chat h5,.prose-chat h6 {
+  font-weight: 600;
+  margin: 1em 0 0.4em;
+  line-height: 1.3;
+}
+.prose-chat h1 { font-size: 1.2em; }
+.prose-chat h2 { font-size: 1.1em; }
+.prose-chat h3 { font-size: 1em; }
+.prose-chat ul,.prose-chat ol { padding-left: 1.4em; margin: 0.5em 0; }
+.prose-chat li { margin: 0.2em 0; }
+.prose-chat li > ul,.prose-chat li > ol { margin: 0.2em 0; }
+.prose-chat blockquote {
+  border-left: 2px solid var(--border);
+  padding-left: 0.85em;
+  margin: 0.5em 0;
+  color: var(--muted-foreground);
+}
+.prose-chat a { color: #a1a1aa; text-decoration: underline; }
+.prose-chat a:hover { color: #e4e4e7; }
+.prose-chat strong { font-weight: 600; }
+.prose-chat em { font-style: italic; }
+.prose-chat hr { border-color: var(--border); margin: 0.75em 0; }
+.prose-chat table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 0.65em 0; }
+.prose-chat th { text-align: left; font-weight: 600; padding: 0.4em 0.75em; border-bottom: 1px solid var(--border); }
+.prose-chat td { padding: 0.35em 0.75em; border-bottom: 1px solid #27272a; }
+.prose-chat tr:last-child td { border-bottom: none; }
+
+/* Inline code */
+.prose-chat :not(pre) > code {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.82em;
+  background: #1f1f22;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+/* Code blocks */
+.prose-chat pre {
+  margin: 0.65em 0;
+  border-radius: 8px;
+  border: 1px solid #27272a;
+  overflow-x: auto;
+  font-size: 0.82em;
+}
+.prose-chat pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+/* Override highlight.js background to match our card */
+.hljs { background: #161618 !important; padding: 1em 1.1em !important; }

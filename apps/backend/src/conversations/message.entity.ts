@@ -25,6 +25,9 @@ export class Message {
   @Column({ nullable: true })
   token_count: number;
 
+  @Column({ type: 'jsonb', nullable: true })
+  sources: Array<{ documentId: string; filename: string }> | null;
+
   @CreateDateColumn()
   created_at: Date;
 

@@ -13,7 +13,11 @@ async function bootstrap() {
     .setTitle('Bot-GPT API')
     .setDescription('API documentation for Bot-GPT')
     .setVersion('1.0')
-    .addTag('conversations')
+    .addBearerAuth()
+    .addTag('Auth', 'Register and log in')
+    .addTag('Conversations', 'Create, list, and chat in conversations')
+    .addTag('Documents', 'Upload PDFs and manage vector chunks')
+    .addTag('Health', 'Service health check')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

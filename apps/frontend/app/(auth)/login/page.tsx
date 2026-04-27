@@ -5,14 +5,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
-import { AnimatedGradientText } from '@/components/ui/aceternity/animated-gradient-text';
-import { BackgroundBeams } from '@/components/ui/aceternity/background-beams';
 import { apiLogin } from '@/lib/api';
 import { saveToken } from '@/lib/auth';
 
@@ -39,18 +31,40 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
-      <BackgroundBeams />
-      <Card className="relative z-10 w-full max-w-sm border-zinc-700 bg-zinc-900/80 backdrop-blur-sm">
-        <CardHeader className="text-center pb-2">
-          <h1 className="text-2xl font-bold">
-            <AnimatedGradientText>BOT GPT</AnimatedGradientText>
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Sign in to your account
+    <div className="min-h-screen flex">
+      {/* Left branding panel — hidden on small screens */}
+      <div className="hidden md:flex w-[420px] shrink-0 bg-[#0f0f11] border-r border-border flex-col justify-center px-12 gap-8">
+        <div>
+          <div className="w-9 h-9 bg-primary rounded-lg mb-4" />
+          <h1 className="text-xl font-bold text-foreground tracking-tight">BOT GPT</h1>
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+            Conversational AI with open chat and document-grounded RAG mode.
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <ul className="space-y-3 text-sm text-muted-foreground">
+          <li className="flex items-start gap-3">
+            <span className="text-zinc-600 mt-0.5">—</span>
+            Open chat on any topic
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-zinc-600 mt-0.5">—</span>
+            Upload PDFs and ask questions about them
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="text-zinc-600 mt-0.5">—</span>
+            Context-aware memory with sliding window or summarization
+          </li>
+        </ul>
+      </div>
+
+      {/* Right form panel */}
+      <div className="flex-1 flex items-center justify-center bg-background px-6">
+        <div className="w-full max-w-sm space-y-6">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Sign in</h2>
+            <p className="text-sm text-muted-foreground mt-1">Enter your credentials to continue</p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
@@ -58,10 +72,11 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 required
+                autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="bg-zinc-800 border-zinc-700"
+                className="bg-card border-border"
               />
             </div>
             <div className="space-y-1.5">
@@ -73,7 +88,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="bg-zinc-800 border-zinc-700"
+                className="bg-card border-border"
               />
             </div>
             {error && (
@@ -81,27 +96,19 @@ export default function LoginPage() {
                 {error}
               </p>
             )}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary hover:bg-primary/90"
-            >
+            <Button type="submit" disabled={loading} className="w-full">
               {loading ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
-        </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
+
+          <p className="text-sm text-muted-foreground text-center">
             No account?{' '}
-            <Link
-              href="/register"
-              className="text-primary font-medium hover:underline"
-            >
+            <Link href="/register" className="text-foreground font-medium hover:underline">
               Create one
             </Link>
           </p>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

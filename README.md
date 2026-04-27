@@ -179,18 +179,26 @@ data: [DONE]
 The backend:
 1. Fetches conversation history
 2. Builds a token-budget context window (sliding window — most recent messages first)
-3. For RAG conversations, retrieves the top-5 semantically similar document chunks
+3. For RAG conversations, runs a parallel similarity search per attached document ID and retrieves the top-5 chunks
 4. Streams the LLM response token-by-token
-5. Persists both the user message and full assistant response
+5. Persists the user message, full assistant response, and RAG source citations
 
-### Documents (RAG)
+### Documents (Library)
 
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/documents/:conversationId` | Upload a PDF/text file (multipart, max 10 MB) |
-| GET | `/documents` | List all user's documents |
+| POST | `/documents` | Upload a PDF to the document library (multipart, max 10 MB) |
+| GET | `/documents` | List all documents in the user library |
 | GET | `/documents/:id` | Get a single document |
-| DELETE | `/documents/:id` | Delete document and its embeddings |
+| DELETE | `/documents/:id` | Delete document, its R2 object, and all vector chunks |
+
+### Conversation Documents
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/conversations/:id/documents` | List documents attached to a conversation |
+| POST | `/conversations/:id/documents/:docId` | Attach a library document to a conversation |
+| DELETE | `/conversations/:id/documents/:docId` | Detach a document from a conversation |
 
 ### Health
 
@@ -215,16 +223,16 @@ window = messages walked from newest → oldest until budget exhausted
 User message
      │
      ▼
-GoogleGenerativeAIEmbeddings.embed(message)
+getAttachedDocuments(conversationId)  → [docId1, docId2, …]
+     │
+     ▼  (parallel per document)
+PGVectorStore.similaritySearch(query, perDoc, { document_id })  ×N
      │
      ▼
-PGVectorStore.similaritySearch(query, topK=5, { conversation_id })
+Top-K chunks merged, injected as context block before user message
      │
      ▼
-Retrieved chunks injected as context block before user message
-     │
-     ▼
-LLM answers using only retrieved context
+LLM answers using only retrieved context → sources persisted on message
 ```
 
 Documents are chunked with `RecursiveCharacterTextSplitter` (1 000 chars, 200 overlap) and stored as vectors in the `doc_embeddings` Postgres table using cosine distance.
@@ -234,11 +242,12 @@ Documents are chunked with `RecursiveCharacterTextSplitter` (1 000 chars, 200 ov
 ## Data Schema
 
 ```sql
-users           (id UUID PK, email, password_hash, created_at)
-conversations   (id UUID PK, user_id FK, title, mode, model, token_count, created_at, updated_at)
-messages        (id UUID PK, conversation_id FK, role, content, token_count, created_at)
-documents       (id UUID PK, user_id FK, conversation_id FK, filename, r2_url, status, created_at)
-doc_embeddings  (id UUID PK, content, vector, metadata JSONB)   -- managed by PGVectorStore
+users                  (id UUID PK, email, password_hash, created_at)
+conversations          (id UUID PK, user_id FK, title, mode, context_strategy, token_count, created_at, updated_at)
+messages               (id UUID PK, conversation_id FK, role, content, token_count, sources JSONB, created_at)
+documents              (id UUID PK, user_id FK, filename, r2_url, status, created_at)
+conversation_documents (conversation_id FK, document_id FK, attached_at)  -- many-to-many join
+doc_embeddings         (id UUID PK, content, vector, metadata JSONB)       -- managed by PGVectorStore
 ```
 
 Message ordering is maintained by `created_at ASC` on retrieval.
@@ -294,7 +303,7 @@ BOT-GPT/
 
 ## Known Limitations & Future Work
 
-- **Summarization**: Long conversations are truncated via sliding window. A summarization step (compress old turns into a summary message) would preserve more context at lower token cost.
-- **Caching**: Conversation list queries hit the DB on every request. Redis caching would reduce load at scale.
-- **Retry logic**: LLM stream failures respond with an error event; automatic retries with backoff are not yet implemented.
-- **Horizontal scaling**: The stateless JWT + SSE architecture supports multiple backend instances behind a load balancer. The DB becomes the bottleneck at scale — read replicas and connection pooling (PgBouncer) would be the next step.
+- **Observability**: No distributed tracing. Adding OpenTelemetry (spans for DB, S3, LLM calls) or Langfuse (LLM-specific tracing) would give per-request visibility into the AI pipeline.
+- **Horizontal scaling**: The stateless JWT + SSE architecture scales horizontally, but the DB becomes the bottleneck at scale — read replicas, PgBouncer, and an IVFFlat index on `doc_embeddings` are the next steps.
+- **Async embedding**: Document embedding currently runs on the request thread (fire-and-forget async). A BullMQ worker queue would make it retryable and off the hot path.
+- **Redis cache**: The in-memory `CacheModule` is a single-instance store. Swapping to a Redis store enables a shared cache across multiple API instances with zero service-code changes.

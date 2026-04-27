@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["jest", "node", "multer"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -16,6 +17,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "strictPropertyInitialization": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,

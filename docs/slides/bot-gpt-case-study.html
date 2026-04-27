@@ -21,14 +21,14 @@
 }
 
 /* ── Base ──────────────────────────────────── */
-.reveal                { font-size: 1.75rem; }
-.reveal h1             { font-size: 2.4rem; color: var(--accent); }
-.reveal h2             { font-size: 1.65rem; color: var(--accent2);
+.reveal                { font-size: 1.85rem; }
+.reveal h1             { font-size: 2.6rem; color: var(--accent); }
+.reveal h2             { font-size: 1.75rem; color: var(--accent2);
                          border-bottom: 1px solid var(--border); padding-bottom:.3em; margin-bottom:.7em; }
-.reveal h3             { font-size: 1.15rem; color: #e2e8f0; margin-bottom:.4em; }
+.reveal h3             { font-size: 1.2rem; color: #e2e8f0; margin-bottom:.4em; }
 .reveal .slides section{ text-align: left; }
-.reveal pre            { font-size: .68rem; box-shadow: none; background: var(--card); border-radius:8px; }
-.reveal code           { background: var(--card); border-radius: 4px; padding: 1px 5px; font-size:.85em; }
+.reveal pre            { font-size: .86rem; box-shadow: none; background: var(--card); border-radius:8px; }
+.reveal code           { background: var(--card); border-radius: 4px; padding: 1px 5px; font-size:.92em; }
 .reveal ul             { margin-left: 1.2em; }
 .reveal li             { margin-bottom: .4em; }
 .reveal .controls      { color: var(--accent); }
@@ -55,7 +55,7 @@
 /* ── Cards ─────────────────────────────────── */
 .card    { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:.9em 1.1em; }
 .card h4 { margin:0 0 .4em; color:var(--accent2); font-size:.9rem; }
-.card p, .card li { font-size:.75rem; color:#cbd5e0; margin:.2em 0; }
+.card p, .card li { font-size:.82rem; color:#cbd5e0; margin:.2em 0; }
 
 /* ── Flow box ──────────────────────────────── */
 .flow-box {
@@ -64,14 +64,14 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: .9em 1.3em;
-  font-size: .68rem;
+  font-size: .82rem;
   line-height: 1.8;
   position: relative;
   white-space: pre;
 }
 
 /* ── Table ─────────────────────────────────── */
-table  { font-size:.72rem; width:100%; border-collapse:collapse; }
+table  { font-size:.8rem; width:100%; border-collapse:collapse; }
 th     { background:var(--card); color:var(--accent2); padding:.45em .8em; text-align:left;
          border-bottom: 1px solid var(--border); }
 td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f0; }
@@ -186,7 +186,7 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: .25em .7em;
-  font-size: .68rem;
+  font-size: .82rem;
   white-space: nowrap;
 }
 .pipe-arrow { color: var(--accent2); font-size: .9rem; }
@@ -197,7 +197,7 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
   border-radius: 6px;
   padding: .4em .8em;
   background: rgba(124,106,247,.08);
-  font-size:.72rem;
+  font-size:.8rem;
 }
 </style>
 </head>
@@ -205,9 +205,7 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
 <div class="reveal">
 <div class="slides">
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 1 — Title
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 1 — Title ═══ -->
 <section class="center" data-background-gradient="radial-gradient(ellipse at top, #1a0533 0%, #0d1117 70%)">
   <div style="animation: slideUp .7s ease both">
     <h1 style="font-size:3rem; margin-bottom:.2em">BOT GPT</h1>
@@ -223,25 +221,23 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 2 — What we built (screenshots)
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 2 — What We Built ═══ -->
 <section>
   <h2>What We Built</h2>
   <div class="split-55">
     <div>
-      <p style="font-size:.85rem; margin-bottom:.8em">A full-stack AI chat platform with two conversation modes:</p>
-      <div class="card" style="margin-bottom:.6em">
+      <p style="font-size:.82rem; margin-bottom:.7em">Full-stack AI chat platform — two conversation modes:</p>
+      <div class="card" style="margin-bottom:.5em">
         <h4>Open Chat</h4>
         <p>Streaming conversations with Gemini 2.5 Flash. Sliding window or summarization context strategy per conversation.</p>
       </div>
-      <div class="card" style="margin-bottom:.6em">
+      <div class="card" style="margin-bottom:.5em">
         <h4>RAG Chat</h4>
-        <p>Upload PDFs → embedded into pgvector → every answer grounded in your documents, not training data.</p>
+        <p>Attach PDFs from your library → embedded into pgvector → every answer grounded in your documents, not training data.</p>
       </div>
       <div class="card">
         <h4>Production features</h4>
-        <p>JWT auth · daily token limits · retry backoff · in-memory caching · multi-stage Docker · GitHub Actions CI</p>
+        <p>JWT auth · daily token limits (100k/day) · exponential backoff retry · in-memory caching · markdown rendering · toast notifications · multi-stage Docker · GitHub Actions CI</p>
       </div>
     </div>
     <div class="screen-wrap">
@@ -251,523 +247,421 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 3 — Architecture
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 3 — Architecture ═══ -->
 <section>
   <h2>Architecture</h2>
   <div class="two-col" style="align-items:start">
-    <div class="flow-box" style="font-size:.65rem">
+    <div class="flow-box" style="font-size:.8rem">
 <span class="tag-blue">Browser</span>
   <span class="flow-arrow">│</span>  HTTPS · REST + SSE
 <span class="tag-purple">NestJS API</span>
-  │
   ├─ <span class="tag-teal">JwtAuthGuard</span> (every route)
-  │
   ├─ ConversationsController
   │    ├─ <span class="tag-yellow">AiService</span>   ← LangChain + Gemini
   │    └─ ConversationsService
-  │         ├─ context window
-  │         ├─ token limit
-  │         └─ caching
-  │
+  │         ├─ context window  ├─ token limit  └─ cache
   ├─ DocumentsController
   │    └─ <span class="tag-yellow">AiService</span>   ← embed + pgvector
-  │
-  └─ AuthController
-       └─ bcrypt · JWT issue
+  └─ AuthController  →  bcrypt · JWT
   │
   ▼
-<span class="tag-blue">PostgreSQL</span>  (users · convs · messages
-                · documents · doc_embeddings)
+<span class="tag-blue">PostgreSQL</span>  users · conversations · messages
+             documents · conversation_documents
+             doc_embeddings (vector)
 <span class="tag-blue">Cloudflare R2</span>  raw PDFs
-<span class="tag-blue">Gemini API</span>   chat + embeddings
+<span class="tag-blue">Gemini API</span>   gemini-2.5-flash + gemini-embedding-2
     </div>
     <div>
-      <div class="hl-box" style="margin-bottom:.7em">
-        <span class="tag-green">✓</span> <strong>Single DB</strong> — pgvector inside Postgres handles both relational data and vector similarity. No Pinecone/Weaviate.
+      <div class="hl-box" style="margin-bottom:.6em">
+        <span class="tag-green">✓</span> <strong>Single DB</strong> — pgvector inside Postgres. No Pinecone/Weaviate.
       </div>
-      <div class="hl-box" style="margin-bottom:.7em">
-        <span class="tag-green">✓</span> <strong>Stateless API</strong> — JWT means no session store. Every instance is identical. Scales horizontally.
+      <div class="hl-box" style="margin-bottom:.6em">
+        <span class="tag-green">✓</span> <strong>Stateless API</strong> — JWT, no session store. Scales horizontally.
       </div>
-      <div class="hl-box" style="margin-bottom:.7em">
-        <span class="tag-green">✓</span> <strong>SSE not WebSocket</strong> — unidirectional, works over HTTP/1.1, perfect for token streaming.
+      <div class="hl-box" style="margin-bottom:.6em">
+        <span class="tag-green">✓</span> <strong>SSE not WebSocket</strong> — unidirectional, HTTP/1.1, perfect for token streaming.
       </div>
       <div class="hl-box">
-        <span class="tag-green">✓</span> <strong>LangChain</strong> — unified interface for streaming, embeddings, vector store. Avoids hand-rolling SSE parsing.
+        <span class="tag-green">✓</span> <strong>Document library</strong> — documents live in user library; conversations attach/detach them. Many-to-many via <code>conversation_documents</code>.
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 4 — Auth (screenshot + flow)
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 4 — Auth + Data Model ═══ -->
 <section>
-  <h2>Auth: JWT Flow</h2>
-  <div class="split-55">
-    <div class="flow-box" style="font-size:.63rem">
-<span class="tag-blue fragment fade-up" data-fragment-index="0">POST /auth/register  { email, password }</span>
-<span class="fragment fade-up" data-fragment-index="1">  ├── bcrypt.hash(password, 10)</span>
-<span class="fragment fade-up" data-fragment-index="1">  ├── INSERT INTO users</span>
-<span class="fragment fade-up" data-fragment-index="1">  │     409 ConflictException if email exists</span>
-<span class="fragment fade-up" data-fragment-index="2">  └── jwt.sign({ sub: userId, email })
-         ──► <span class="tag-green">{ access_token }</span></span>
+  <h2>Auth + Data Model</h2>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <div class="flow-box" style="font-size:.78rem; margin-bottom:.6em">
+<span class="tag-blue">POST /auth/register  { email, password }</span>
+  ├── bcrypt.hash(password, 10)
+  ├── INSERT INTO users  (409 if email taken)
+  └── jwt.sign({ sub: userId }) ──► <span class="tag-green">{ access_token }</span>
 
-<span class="tag-blue fragment fade-up" data-fragment-index="3">POST /auth/login  { email, password }</span>
-<span class="fragment fade-up" data-fragment-index="4">  ├── SELECT user WHERE email = ?
-  ├── bcrypt.compare(password, hash)
-  │     401 UnauthorizedException if wrong</span>
-<span class="fragment fade-up" data-fragment-index="5">  └── jwt.sign({ sub: userId, email })
-         ──► <span class="tag-green">{ access_token }</span></span>
+<span class="tag-blue">POST /auth/login  { email, password }</span>
+  ├── bcrypt.compare → 401 if wrong
+  └── jwt.sign(...)  ──► <span class="tag-green">{ access_token }</span>
 
-<span class="fragment fade-up" data-fragment-index="6">Every route:
+Every route:
   Authorization: Bearer &lt;token&gt;
-  └── <span class="tag-purple">JwtAuthGuard</span>  →  req.user = { id, email }
-        401 if missing / expired / tampered</span>
+  └── <span class="tag-purple">JwtAuthGuard</span> → req.user = { id, email }
+        401 if missing / expired / tampered
+      </div>
+      <img src="screenshots/login.png" class="screenshot" alt="Login page" />
     </div>
     <div>
-      <img src="screenshots/login.png" class="screenshot" alt="Login page" style="border-radius:10px" />
-      <p class="muted" style="margin-top:.5em; text-align:center">Stateless — no session store needed</p>
+      <p style="font-size:.8rem; margin-bottom:.5em"><strong>Schema (key tables):</strong></p>
+      <div class="flow-box" style="font-size:.76rem">
+users              (id, email, password_hash)
+conversations      (id, user_id, title, mode,
+                    context_strategy, token_count)
+messages           (id, conversation_id, role,
+                    content, token_count,
+                    <span class="tag-green">sources JSONB</span>)
+documents          (id, user_id, filename,
+                    r2_url, status)
+<span class="tag-green">conversation_documents</span>
+                   (conversation_id, document_id,
+                    attached_at)          ← join table
+doc_embeddings     (id, content, vector(768),
+                    metadata JSONB)
+      </div>
+      <div class="hl-box" style="margin-top:.5em; font-size:.78rem">
+        Documents are <em>not</em> tied to a conversation — they belong to the user's library and get attached/detached as needed.
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 5 — New Conversation (screenshot)
-═════════════════════════════════════════════ -->
-<section>
-  <h2>Conversations: Create Flow</h2>
-  <div class="split-55">
-    <div>
-      <p style="font-size:.82rem; margin-bottom:.7em">Each conversation has two key settings chosen at creation:</p>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Mode</h4>
-        <p><strong>Open chat</strong> — pure LLM conversation, no documents.</p>
-        <p><strong>RAG</strong> — answers grounded in uploaded PDFs only.</p>
-      </div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Context Strategy</h4>
-        <p><strong>Sliding window</strong> — newest messages kept within token budget. Zero extra API calls.</p>
-        <p><strong>Summarization</strong> — older turns LLM-compressed into a paragraph. Preserves semantic context.</p>
-      </div>
-      <div class="flow-box" style="font-size:.63rem; margin-top:.3em">
-POST /conversations
-{ mode, title, context_strategy }
-──► stored in <span class="tag-yellow">conversations</span> table
-──► cache.del(`convlist:${userId}`)  <span class="tag-green">← invalidate</span>
-      </div>
-    </div>
-    <div>
-      <img src="screenshots/new-chat-dialog.png" class="screenshot" alt="New chat dialog" />
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-  SLIDE 6 — SSE Streaming (screenshot + animated)
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 5 — SSE Streaming ═══ -->
 <section>
   <h2>LLM Streaming via SSE</h2>
   <div class="split-55">
     <div>
-      <div class="flow-box" style="font-size:.62rem; margin-bottom:.7em">
-<span class="tag-blue">POST /conversations/:id/messages</span>
+      <div class="flow-box" style="font-size:.77rem; margin-bottom:.7em">
+<span class="tag-blue">POST /conversations/:id/messages  { content }</span>
   │
-  ├── <span class="tag-yellow">getDailyTokensUsed(userId)</span>  ← sync DB query
+  ├── <span class="tag-yellow">getDailyTokensUsed(userId)</span>
   │     <span class="tag-red">429 JSON</span> if ≥ 100 000 tokens/day
-  │     (before SSE headers — still plain JSON)
+  │     (before SSE headers — still JSON-switchable)
   │
-  ├── res.setHeader('Content-Type',
-  │                 'text/event-stream')
+  ├── buildContextWindow(messages, budget)
+  │     budget = <span class="tag-green">8 000</span> (open) | <span class="tag-yellow">6 000</span> (RAG)
   │
-  ├── for await (token of llm.stream(...)) {
-  │     res.write(`data: {"token":"..."}\n\n`)
-  │   }
+  ├── res.setHeader('Content-Type', 'text/event-stream')
+  │
+  ├── for await (token of llm.stream(...))
+  │     res.write(`data: {"token":"…"}\n\n`)
   │
   └── res.write(`data: {"done":true,
-           "userTokens":12,
-           "assistantTokens":87,
-           "sources":[...]}\n\n`)
+           "userTokens":12, "assistantTokens":87,
+           "sources":[{documentId, filename}]}\n\n`)
       res.end()
       </div>
-      <p style="font-size:.72rem; margin-bottom:.4em"><strong>Simulated token stream:</strong></p>
-      <div class="token-stream" style="font-family:monospace; font-size:.75rem; color:var(--accent2); background:var(--card); padding:.6em 1em; border-radius:8px; border:1px solid var(--border)">
+      <div class="token-stream" style="font-family:monospace; font-size:.73rem; color:var(--accent2); background:var(--card); padding:.5em 1em; border-radius:8px; border:1px solid var(--border)">
         <span>RAG</span><span> is</span><span> an</span><span> AI</span><span> technique</span><span> that</span><span> augments</span><span> LLMs</span><span> with</span><span> external</span><span> knowledge.</span><span class="cursor"></span>
       </div>
     </div>
     <div>
       <img src="screenshots/chat-response.png" class="screenshot" alt="Chat response" />
-      <p class="muted" style="text-align:center; margin-top:.5em">Real Gemini 2.5 Flash response</p>
+      <div class="card" style="margin-top:.6em">
+        <h4>Why 429 before SSE?</h4>
+        <p>Once <code>text/event-stream</code> is written, the response is locked — can't switch to JSON error. Daily limit checked first.</p>
+      </div>
+      <div class="card" style="margin-top:.5em">
+        <h4>Sources on done event</h4>
+        <p>RAG source citations returned in the <code>done</code> event and persisted as JSONB on the message. Frontend renders filename badges.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 7 — Context Window: Sliding Window
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 6 — Context Strategies ═══ -->
 <section>
-  <h2>Context Strategy: Sliding Window</h2>
-  <p style="font-size:.82rem">Default — zero extra API calls. Always keeps the most recent context.</p>
-
-  <div class="two-col" style="margin-top:.6em; align-items:start">
-    <div class="flow-box" style="font-size:.63rem">
-budget = <span class="tag-green">8 000</span> tokens (open) | <span class="tag-yellow">6 000</span> (RAG)
-
-messages = [msg₁  msg₂  msg₃  msg₄  msg₅]
-            oldest  ──────────────►  newest
-
-<span class="fragment fade-up" data-fragment-index="0">walk newest → oldest:</span>
-<span class="fragment fade-up" data-fragment-index="1">  msg₅  80 t   total=80    <span class="tag-green">✓ add</span></span>
-<span class="fragment fade-up" data-fragment-index="2">  msg₄  120 t  total=200   <span class="tag-green">✓ add</span></span>
-<span class="fragment fade-up" data-fragment-index="3">  msg₃  7400 t total=7600  <span class="tag-green">✓ add</span></span>
-<span class="fragment fade-up" data-fragment-index="4">  msg₂  900 t  total=8500  <span class="tag-red">✗ exceeds budget → stop</span></span>
-<span class="fragment fade-up" data-fragment-index="5">
-window = [msg₃, msg₄, msg₅]  ← chronological order</span>
-<span class="fragment fade-up" data-fragment-index="6">
-<span class="tag-yellow">Edge case:</span> msg₅ alone > budget?
-→ still include it (minimum-1 guarantee)
-→ conversation continues, just no history</span>
-    </div>
-
+  <h2>Context Strategies</h2>
+  <div class="two-col" style="align-items:start">
     <div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Why newest → oldest?</h4>
-        <p>We want to guarantee the most recent turn is always present. Walking from oldest→newest would drop it under budget pressure.</p>
+      <h3>Sliding Window <span class="muted">(default)</span></h3>
+      <div class="flow-box" style="font-size:.76rem">
+budget = 8 000 t (open) | 6 000 t (RAG)
+
+walk newest → oldest:
+  msg₅  80 t   total=80     <span class="tag-green">✓</span>
+  msg₄  120 t  total=200    <span class="tag-green">✓</span>
+  msg₃  7400 t total=7600   <span class="tag-green">✓</span>
+  msg₂  900 t  total=8500   <span class="tag-red">✗ stop</span>
+
+window = [msg₃, msg₄, msg₅]  chronological
+
+<span class="tag-yellow">Edge:</span> msg₅ alone > budget?
+→ include it anyway (min-1 guarantee)
       </div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Token estimation</h4>
-        <p><code>Math.ceil(text.length / 4)</code> — synchronous, zero latency. Stored on each message at save time.</p>
+      <div class="card" style="margin-top:.5em">
+        <h4>Zero extra API calls</h4>
+        <p>Guaranteed most-recent context. Old turns silently dropped when history overruns budget.</p>
       </div>
-      <div class="card">
-        <h4>Budget split</h4>
-        <p>RAG uses 6k (not 8k) to leave headroom for the retrieved chunk context block injected into the final message.</p>
+    </div>
+    <div>
+      <h3>Summarization</h3>
+      <div class="flow-box" style="font-size:.76rem">
+<span class="tag-blue">Step 1</span> first-pass window
+  older = messages before window
+
+<span class="tag-blue">Step 2</span> summarize older slice (1 LLM call)
+  summary = llm.invoke(older)
+  summaryTokens = estimateTokens(summary)
+
+<span class="tag-blue">Step 3</span> rebuild window
+  recent = buildWindow(budget - summaryTokens)
+  <span class="tag-green">← total never overruns budget</span>
+
+<span class="tag-blue">Step 4</span> send to Gemini:
+  [ SystemMessage,
+    <span class="tag-green">AssistantMessage("[Summary]: …"),</span>
+    …recent…, HumanMessage ]
+      </div>
+      <div class="card" style="margin-top:.5em">
+        <h4>Trade-off</h4>
+        <p>1 extra LLM call per request when history is long, but preserves semantic content of old turns (80-90% token reduction).</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 8 — Context Strategy: Summarization
-═════════════════════════════════════════════ -->
-<section>
-  <h2>Context Strategy: Summarization</h2>
-  <p style="font-size:.82rem">For long conversations — preserves semantic content of old turns at the cost of one extra LLM call.</p>
-
-  <div class="flow-box" style="margin-top:.5em; font-size:.63rem">
-<span class="fragment fade-up" data-fragment-index="0"><span class="tag-blue">Step 1</span>  first-pass window
-  firstPass = buildContextWindow(messages, budget=8000)
-  older     = messages before firstPass  →  [msg₁ … msg₉₄]</span>
-
-<span class="fragment fade-up" data-fragment-index="1"><span class="tag-blue">Step 2</span>  summarize older slice  (1 LLM call)
-  summary      = await aiService.summarizeHistory(older)
-  summaryTokens = estimateTokens(summary)   // e.g. 350</span>
-
-<span class="fragment fade-up" data-fragment-index="2"><span class="tag-blue">Step 3</span>  rebuild recent window accounting for summary
-  recent = buildContextWindow(messages, 8000 - 350)
-  <span class="tag-green">← summary tokens reserved so total never overruns budget</span></span>
-
-<span class="fragment fade-up" data-fragment-index="3"><span class="tag-blue">Step 4</span>  final context to Gemini:
-  [
-    SystemMessage("You are BOT GPT…"),
-    <span class="tag-green">AssistantMessage("[Earlier conversation summary]: …"),</span>
-    …recent messages…,
-    HumanMessage(current query)
-  ]</span>
-  </div>
-  <p class="muted fragment fade-up" data-fragment-index="4" style="margin-top:.5em">
-    <span class="tag-yellow">Bug fixed this session:</span> original code built recent window at full budget, <em>then</em> prepended summary — could silently exceed the budget. Fixed by deducting summary tokens before the second buildContextWindow call.
-  </p>
-</section>
-
-<!-- ═══════════════════════════════════════════
-  SLIDE 9 — RAG Pipeline
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 7 — RAG Pipeline ═══ -->
 <section>
   <h2>RAG Pipeline</h2>
   <div class="two-col" style="align-items:start">
     <div>
-      <h3>Upload path</h3>
-      <div class="flow-box" style="font-size:.6rem">
-<div class="pipe-row fragment fade-up" data-fragment-index="0">
-  <span class="pipe-node tag-blue">POST /documents/:convId</span>
+      <h3>Ingest path</h3>
+      <div class="flow-box" style="font-size:.76rem">
+<div class="pipe-row">
+  <span class="pipe-node tag-blue">POST /documents  { PDF }</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="1">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node">Upload → Cloudflare R2</span>
+  <span class="pipe-node">Upload → Cloudflare R2 (S3-compat, free egress)</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="2">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node">RecursiveCharacterTextSplitter<br/>chunkSize:1000 overlap:200</span>
+  <span class="pipe-node">RecursiveCharacterTextSplitter<br/>chunkSize:1000 · overlap:200</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="3">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node">GoogleGenerativeAIEmbeddings<br/>→ VECTOR(768) per chunk</span>
+  <span class="pipe-node">GoogleGenerativeAIEmbeddings → VECTOR(768)</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="4">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node tag-green">PGVectorStore.addDocuments()<br/>metadata: {doc_id, conv_id, filename}</span>
+  <span class="pipe-node tag-green">PGVectorStore · metadata: { document_id, filename }</span>
+</div>
+<div class="pipe-row" style="margin-top:.4em">
+  <span class="pipe-node tag-blue">POST /conversations/:id/documents/:docId</span>
+</div>
+<div class="pipe-row">
+  <span class="pipe-arrow">↓</span>
+  <span class="pipe-node tag-green">INSERT conversation_documents</span>
 </div>
       </div>
     </div>
     <div>
       <h3>Query path</h3>
-      <div class="flow-box" style="font-size:.6rem">
-<div class="pipe-row fragment fade-up" data-fragment-index="5">
+      <div class="flow-box" style="font-size:.76rem">
+<div class="pipe-row">
   <span class="pipe-node tag-blue">POST /conversations/:id/messages</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="6">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node">similaritySearch(query, topK=5,<br/><span class="tag-green">filter: { conversation_id }</span>)</span>
+  <span class="pipe-node">getAttachedDocuments(convId) → [docId…]</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="7">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node">Build context block:<br/>"Context:\nchunk1\n---\nchunk2\n…<br/>Using only the context above, answer: {q}"</span>
+  <span class="pipe-node"><span class="tag-green">Parallel</span> similaritySearch per document_id<br/>perDoc = ceil(topK / docs.length)</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="8">
+<div class="pipe-row">
+  <span class="pipe-arrow">↓</span>
+  <span class="pipe-node">"Context:\nchunk1\n---\n…\nAnswer: {q}"</span>
+</div>
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
   <span class="pipe-node">withRetry(() → llm.stream(messages))</span>
 </div>
-<div class="pipe-row fragment fade-up" data-fragment-index="9">
+<div class="pipe-row">
   <span class="pipe-arrow">↓</span>
-  <span class="pipe-node tag-green">done event: sources[{filename, content}]<br/>→ frontend filename badges</span>
+  <span class="pipe-node tag-green">done event → sources persisted as JSONB</span>
 </div>
+      </div>
+      <div class="hl-box" style="margin-top:.5em; font-size:.76rem">
+        Filter by <code>document_id</code> (not conversation) — documents can be shared across conversations with no vector duplication.
       </div>
     </div>
   </div>
-  <p class="muted fragment fade-up" data-fragment-index="10">
-    <span class="tag-green">Key:</span> <code>filter: { conversation_id }</code> scopes vector search to this conversation's documents only — no cross-contamination.
-  </p>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 10 — Documents page screenshot
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 8 — Document Library ═══ -->
 <section>
-  <h2>Documents Management</h2>
+  <h2>Document Library</h2>
   <div class="split-55" style="align-items:start">
     <div>
-      <div class="flow-box" style="font-size:.62rem; margin-bottom:.7em">
-<span class="tag-blue">POST /documents/:convId</span>
-  multipart/form-data  { file: PDF, max 10 MB }
-  → status: 'processing'  (returned immediately)
-  → embedding runs synchronously
-  → status: 'ready'  (or 'failed' on error)
+      <p style="font-size:.8rem; margin-bottom:.6em">Documents belong to the <strong>user library</strong>, not a conversation. Conversations attach/detach documents as needed.</p>
+      <div class="flow-box" style="font-size:.76rem; margin-bottom:.6em">
+<span class="tag-blue">POST   /documents</span>                 upload to library
+<span class="tag-blue">GET    /documents</span>                 list user library
+<span class="tag-blue">DELETE /documents/:id</span>             delete + R2 object + vectors
 
-<span class="tag-blue">GET /documents</span>
-  returns all docs for authenticated user
-  across all conversations
-
-<span class="tag-blue">DELETE /documents/:id</span>
-  1. delete row from documents table
-  2. vectorStore.delete({
-       filter: { document_id }
-     })   ← removes all chunks from pgvector
+<span class="tag-blue">GET    /conversations/:id/documents</span>  list attached
+<span class="tag-blue">POST   /conversations/:id/documents/:docId</span>  attach
+                                   <span class="tag-red">409</span> if already attached
+<span class="tag-blue">DELETE /conversations/:id/documents/:docId</span>  detach
       </div>
       <div class="card">
-        <h4>Why Cloudflare R2?</h4>
-        <p>S3-compatible API — zero egress fees vs AWS S3. Raw file stored for potential re-processing. Public URL returned and saved in <code>documents.r2_url</code>.</p>
+        <h4>Why library model?</h4>
+        <p>A document uploaded once can be attached to multiple conversations without re-uploading or re-embedding. Detach removes the join row only — embeddings stay.</p>
       </div>
     </div>
     <div>
       <img src="screenshots/documents.png" class="screenshot" alt="Documents page" />
-      <p class="muted" style="text-align:center; margin-top:.5em">Upload button triggers multipart POST</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-  SLIDE 11 — Daily Token Limit
-═════════════════════════════════════════════ -->
-<section>
-  <h2>Daily Token Limit</h2>
-  <p style="font-size:.82rem">Hard cap of <strong>100 000 tokens / user / UTC day</strong> — enforced before any LLM call or SSE headers.</p>
-
-  <div class="two-col" style="margin-top:.6em; align-items:start">
-    <div class="flow-box" style="font-size:.62rem">
-<span class="fragment fade-up" data-fragment-index="0"><span class="tag-blue">getDailyTokensUsed(userId)</span>:</span>
-<span class="fragment fade-up" data-fragment-index="0">  SELECT COALESCE(SUM(msg.token_count),0)
-  FROM   messages msg
-  JOIN   conversations conv
-           ON conv.id = msg.conversation_id
-  WHERE  conv.user_id  = :userId
-  AND    msg.created_at >= :startOfUTCDay</span>
-
-<span class="fragment fade-up" data-fragment-index="1">sendMessage():
-  const dailyUsed = await getDailyTokensUsed(...)
-  if (dailyUsed >= 100_000) {
-    <span class="tag-red">return res.status(429).json({</span>
-      error: "Daily limit of 100,000 tokens
-              reached. Resets at midnight UTC."
-    })    ← plain JSON, not an SSE event
-  }
-  // proceed: set SSE headers, stream…</span>
-
-<span class="fragment fade-up" data-fragment-index="2">After stream completes:
-  saveMessage(id, 'user',      content, userTokens)
-  saveMessage(id, 'assistant', full,    assistantTokens)
-  convRepo.increment(id, 'token_count', total)</span>
-    </div>
-
-    <div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Why before SSE headers?</h4>
-        <p>Once <code>Content-Type: text/event-stream</code> is written, the response is locked — you can only write SSE events, not switch to a JSON error body. The limit check must happen first.</p>
-      </div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Resets at UTC midnight</h4>
-        <p><code>startOfDay.setUTCHours(0,0,0,0)</code> — consistent boundary regardless of user timezone.</p>
-      </div>
-      <div class="card">
-        <h4>Configured via env</h4>
-        <p><code>DAILY_TOKEN_LIMIT=100000</code> — defaults to 100k if not set. Adjustable per environment.</p>
+      <div class="card" style="margin-top:.6em">
+        <h4>Cloudflare R2</h4>
+        <p>S3-compatible, zero egress fees. <code>DeleteObjectCommand</code> called on document delete — no orphaned objects.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 12 — Retry Logic
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 9 — Reliability ═══ -->
 <section>
-  <h2>LLM Retry: Exponential Backoff</h2>
-  <div class="two-col" style="align-items:start">
+  <h2>Reliability &amp; Cost Controls</h2>
+  <div class="three-col" style="align-items:start">
     <div>
-      <pre><code class="typescript">private async withRetry&lt;T&gt;(
-  fn: () =&gt; Promise&lt;T&gt;,
-  maxAttempts = 3,
-): Promise&lt;T&gt; {
-  let delay = 1000;
-  let lastError: unknown;
-  for (let i = 1; i &lt;= maxAttempts; i++) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      if (i &lt; maxAttempts) {
-        await sleep(delay);
-        delay *= 2;      // 1s → 2s → 4s
-      }
-    }
-  }
-  throw lastError;   // bubble up after 3 fails
-}
+      <h3>Token Limits</h3>
+      <div class="flow-box" style="font-size:.82rem">
+<span class="tag-blue">getDailyTokensUsed</span>:
+  SUM(msg.token_count)
+  JOIN conversations
+  WHERE user_id = ?
+  AND created_at ≥ UTC day
 
-// Usage:
-const stream = await this.withRetry(
-  () =&gt; this.llm.stream(messages)
-);</code></pre>
+if used ≥ 100 000:
+  <span class="tag-red">res.status(429).json(...)</span>
+  ← before SSE headers
+
+After stream:
+  saveMessage(..., userTokens)
+  saveMessage(..., assistantTokens)
+  token_count += total
+      </div>
+      <div class="card" style="margin-top:.4em">
+        <h4>UTC midnight reset</h4>
+        <p>startOfDay.setUTCHours(0,0,0,0) — consistent across timezones. Configurable via <code>DAILY_TOKEN_LIMIT</code> env.</p>
+      </div>
     </div>
     <div>
-      <div class="flow-box" style="font-size:.65rem; margin-bottom:.7em">
-<span class="fragment fade-up" data-fragment-index="0">Attempt 1 ──► Gemini
-             <span class="tag-red">503 error</span>
-             sleep 1 000 ms</span>
+      <h3>LLM Retry</h3>
+      <div class="flow-box" style="font-size:.82rem">
+withRetry(fn, maxAttempts=3):
+  delay = 1000ms
 
-<span class="fragment fade-up" data-fragment-index="1">Attempt 2 ──► Gemini
-             <span class="tag-red">503 error</span>
-             sleep 2 000 ms</span>
+  attempt 1 → <span class="tag-red">fail</span> → sleep 1s
+  attempt 2 → <span class="tag-red">fail</span> → sleep 2s
+  attempt 3 → <span class="tag-green">OK  → stream</span>
 
-<span class="fragment fade-up" data-fragment-index="2">Attempt 3 ──► Gemini
-             <span class="tag-green">200 OK → tokens stream</span></span>
+  all 3 fail → throw
+    → SSE: {"error":"LLM unavailable"}
+    → toast notification on client
 
-<span class="fragment fade-up" data-fragment-index="3">If all 3 fail:
-  SSE handler catches error
-  res.write(`{"error":"LLM unavailable"}`)
-  res.end()</span>
+Applied to:
+  streamOpenChat()
+  streamRagChat()
       </div>
-      <div class="card">
+      <div class="card" style="margin-top:.4em">
         <h4>Tested with Jest</h4>
-        <p>Mock <code>setTimeout</code> to run instantly, make <code>llm.stream</code> fail twice then succeed. Assert tokens arrive on attempt 3 and <code>mockStream</code> called exactly 3 times.</p>
+        <p>Mock setTimeout to instant. Fail twice then succeed. Assert 3 calls, correct tokens returned.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Caching</h3>
+      <div class="flow-box" style="font-size:.82rem">
+GET /conversations?page&limit
+
+key = `convlist:${userId}:${page}:${limit}`
+
+cache.get(key) → <span class="tag-green">hit</span>: return
+               → <span class="tag-yellow">miss</span>: query DB
+                         cache.set(key, ttl=60s)
+
+Invalidation:
+  create() → cache.del(`convlist:${userId}`)
+  remove() → cache.del(`convlist:${userId}`)
+      </div>
+      <div class="card" style="margin-top:.4em">
+        <h4>In-memory now / Redis later</h4>
+        <p>Zero infra for single instance. Swap to Redis store when scaling — zero service code changes.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 13 — Caching
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 10 — Testing ═══ -->
 <section>
-  <h2>Conversation List Caching</h2>
-  <div class="split-55" style="align-items:start">
-    <div>
-      <div class="flow-box" style="font-size:.62rem; margin-bottom:.6em">
-<span class="fragment fade-up" data-fragment-index="0">async findAll(userId, page, limit) {
-  const key = `convlist:${userId}:${page}:${limit}`</span>
-
-<span class="fragment fade-up" data-fragment-index="1">  const cached = await cache.get(key)
-  if (cached) <span class="tag-green">return cached   ← cache hit</span></span>
-
-<span class="fragment fade-up" data-fragment-index="2">  const result = await convRepo.find(...)
-  await cache.set(key, result, ttl=60_000)
-  return result</span>
-
-<span class="fragment fade-up" data-fragment-index="3">}
-
-// Invalidation on mutations:
-create() → cache.del(`convlist:${userId}`)
-remove() → cache.del(`convlist:${userId}`)
-           <span class="tag-green">← wildcard-style: all pages cleared</span></span>
-      </div>
-      <div class="flow-box" style="font-size:.62rem">
-NestJS CacheModule config (app.module.ts):
-
-CacheModule.register({
-  isGlobal: true,
-  ttl: 60_000    // 60 seconds
-})
-
-@Inject(CACHE_MANAGER) private cache: Cache
-      </div>
-    </div>
-    <div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>Why in-memory, not Redis?</h4>
-        <p>Single instance deployment. NestJS <code>CacheModule</code> (node-cache internally) adds zero infrastructure. Redis is the right call when running multiple API instances that need a <em>shared</em> cache.</p>
-      </div>
-      <div class="card" style="margin-bottom:.6em">
-        <h4>What's cached</h4>
-        <p>Only <code>GET /conversations</code> — the highest-frequency read. Single conversation fetches (<code>GET /conversations/:id</code>) are not cached since they include the full message list and change with every send.</p>
-      </div>
-      <div class="card">
-        <h4>Switching to Redis later</h4>
-        <p>Replace <code>CacheModule.register()</code> with <code>CacheModule.registerAsync()</code> + <code>@nestjs/cache-manager</code> Redis store. Zero changes to service code.</p>
-      </div>
-    </div>
+  <h2>Testing: TDD Throughout</h2>
+  <p style="font-size:.8rem">RED → GREEN → commit. 40 tests · 5 suites · &lt;2 s. Zero network or DB needed.</p>
+  <table style="margin-top:.5em">
+    <tr><th>Suite</th><th>Key scenarios</th><th>#</th></tr>
+    <tr>
+      <td><code>auth.service.spec</code></td>
+      <td>Register (duplicate→409), login (bad pw→401), JWT issued</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code>conversations.service.spec</code></td>
+      <td>Create, pagination, ownership 403/404, sliding window budget (incl. oversized edge case), daily token SUM query</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td><code>documents.service.spec</code></td>
+      <td>Upload + embed, list by user, delete + pgvector chunk cleanup</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code>ai.service.spec</code></td>
+      <td>estimateTokens, streamOpenChat, streamRagChat context injection, retry (2 fails→success; all 3 fail), summarizeHistory, retrieveRelevantDocs (parallel per-doc)</td>
+      <td>16</td>
+    </tr>
+  </table>
+  <div class="hl-box" style="margin-top:.7em; font-size:.78rem">
+    All external deps (Gemini, pgvector, TypeORM repos, S3) are Jest-mocked. Retry tests mock <code>setTimeout</code> — no real waits.
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 14 — Docker + CI
-═════════════════════════════════════════════ -->
+<!-- ═══ SLIDE 11 — Docker + CI ═══ -->
 <section>
-  <h2>Deployment: Docker + CI</h2>
+  <h2>Docker + CI</h2>
   <div class="two-col" style="align-items:start">
     <div>
       <h3>Multi-Stage Dockerfile</h3>
       <pre><code class="dockerfile"># Stage 1: deps — layer-cached
 FROM node:20-alpine AS deps
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package*.json ./ && RUN npm ci
 
 # Stage 2: builder
 FROM node:20-alpine AS builder
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN npm run build          # → dist/
+COPY --from=deps /app/node_modules .
+COPY . . && RUN npm run build
 
-# Stage 3: runner (minimal)
+# Stage 3: runner — minimal image
 FROM node:20-alpine AS runner
 ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs \
- && adduser  --system --uid 1001 nestjs
+RUN adduser --system --uid 1001 nestjs
 COPY --from=builder /app/dist ./dist
-COPY --from=deps /app/node_modules ./node_modules
-COPY package*.json ./
-USER nestjs                # non-root
+COPY --from=deps /app/node_modules .
+USER nestjs          # non-root
 EXPOSE 3001
 CMD ["node", "dist/main"]</code></pre>
+      <div class="card" style="margin-top:.5em">
+        <h4>Non-root user</h4>
+        <p>uid 1001 cannot write to system dirs if the container is compromised.</p>
+      </div>
     </div>
     <div>
       <h3>GitHub Actions CI</h3>
@@ -775,128 +669,63 @@ CMD ["node", "dist/main"]</code></pre>
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - run: npm ci
-      - run: npm run lint
+      - run: npm run lint   # ESLint + TS check
 
   test:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: pgvector/pgvector:pg17
-        env:
-          POSTGRES_DB: botgpt_test
-        options: >-
-          --health-cmd pg_isready
     steps:
-      - uses: actions/checkout@v4
       - run: npm ci
-      - run: npm test</code></pre>
+      - run: npm test       # Jest · 40 tests</code></pre>
       <div class="card" style="margin-top:.6em">
-        <h4>Why non-root user?</h4>
-        <p>If the container is compromised, <code>uid 1001</code> cannot write to system directories or escalate privileges. Security best practice for production images.</p>
+        <h4>Lint + test in parallel</h4>
+        <p>Two independent jobs run concurrently on every push and PR. Blocks merge on any failure.</p>
+      </div>
+      <div class="card" style="margin-top:.5em">
+        <h4>docker-compose</h4>
+        <p><code>docker-compose up --build</code> starts postgres (pgvector) + backend together.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-  SLIDE 15 — Testing
-═════════════════════════════════════════════ -->
-<section>
-  <h2>Testing: TDD Throughout</h2>
-  <p style="font-size:.82rem">Every feature: RED test first → implementation → GREEN. 40 tests, 5 suites, &lt;2 seconds.</p>
-  <table style="margin-top:.6em">
-    <tr><th>Suite</th><th>Key scenarios</th><th>Tests</th></tr>
-    <tr>
-      <td><code>auth.service.spec.ts</code></td>
-      <td>Register (duplicate→409), login (bad pw→401), JWT issued on success</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td><code>conversations.service.spec.ts</code></td>
-      <td>Create with default strategy, pagination, ownership 403/404, sliding window budget (incl. oversized message edge case), daily token query</td>
-      <td>14</td>
-    </tr>
-    <tr>
-      <td><code>documents.service.spec.ts</code></td>
-      <td>Upload + embed flow, list by user, delete + pgvector chunk cleanup</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td><code>ai.service.spec.ts</code></td>
-      <td>estimateTokens, streamOpenChat, streamRagChat context injection, retry (2 fails then success; all 3 fail), summarizeHistory (3 cases), retrieveRelevantDocs</td>
-      <td>16</td>
-    </tr>
-  </table>
-  <div class="hl-box" style="margin-top:.8em; font-size:.72rem">
-    All external deps (Gemini, pgvector, TypeORM repos) are Jest-mocked. Retry tests mock <code>setTimeout</code> to run instantly — no real waits. Tests run with zero network or DB required.
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-  SLIDE 16 — Scalability
-═════════════════════════════════════════════ -->
-<section>
-  <h2>Where it Breaks at Scale</h2>
-  <div class="flow-box" style="margin-bottom:.8em; font-size:.67rem">
-Users ──► <span class="tag-green">API layer</span>  ← stateless, scales horizontally behind any LB
+<!-- ═══ SLIDE 12 — Scalability + Summary ═══ -->
+<section data-background-gradient="radial-gradient(ellipse at bottom, #1a0533 0%, #0d1117 70%)">
+  <h2>Scalability &amp; Summary</h2>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <div class="flow-box" style="font-size:.8rem; margin-bottom:.6em">
+Users ──► <span class="tag-green">API</span>  stateless · horizontal scale
               │
               ▼
-        <span class="tag-yellow">PostgreSQL</span>  ← single writer, ~10k concurrent writes before it struggles
-              │
+        <span class="tag-yellow">PostgreSQL</span>  bottleneck at ~10k writes/s
+              │  → read replicas · PgBouncer
+              │  → partition doc_embeddings
               ▼
-        <span class="tag-red">Gemini API rate limits</span>  ← shared quota across all users
-  </div>
-  <div class="three-col">
-    <div class="card">
-      <h4>DB bottleneck</h4>
-      <p>Read replicas for <code>GET /conversations</code> + message history.</p>
-      <p>PgBouncer for connection pooling.</p>
-      <p>Partition <code>doc_embeddings</code> by <code>conversation_id</code>.</p>
-      <p>Shard <code>messages</code> by <code>conversation_id</code> at extreme scale.</p>
+        <span class="tag-red">Gemini rate limits</span>  shared quota
+              → Redis cache repeated RAG queries
+              → BullMQ async embedding queue
+      </div>
+      <div class="card">
+        <h4>Cache → Redis</h4>
+        <p>Swap <code>CacheModule.register()</code> config. Zero service changes. Shared cache across instances.</p>
+      </div>
     </div>
-    <div class="card">
-      <h4>LLM cost</h4>
-      <p>Redis cache for repeated RAG queries (same question + same docs = same answer).</p>
-      <p>BullMQ queue for document embedding — async, retryable, off the request path.</p>
-    </div>
-    <div class="card">
-      <h4>Caching</h4>
-      <p>Swap in-memory <code>CacheModule</code> for Redis store.</p>
-      <p>Zero service code changes — just config swap.</p>
-      <p>Enables shared cache across multiple API instances.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-  SLIDE 17 — Summary
-═════════════════════════════════════════════ -->
-<section class="center" data-background-gradient="radial-gradient(ellipse at bottom, #1a0533 0%, #0d1117 70%)">
-  <h2 style="border:none">Everything Built</h2>
-  <div class="two-col" style="text-align:left; margin-top:.6em; font-size:.85rem">
-    <div>
-      <p><span class="tag-green">✓</span> JWT auth — register + login</p>
-      <p><span class="tag-green">✓</span> Streaming chat via SSE</p>
-      <p><span class="tag-green">✓</span> RAG — pgvector + Gemini embeddings</p>
-      <p><span class="tag-green">✓</span> Sliding window context strategy</p>
-      <p><span class="tag-green">✓</span> Summarization context strategy</p>
-      <p><span class="tag-green">✓</span> Daily token limit (100k / day)</p>
-    </div>
-    <div>
-      <p><span class="tag-green">✓</span> Exponential backoff retry (3×)</p>
-      <p><span class="tag-green">✓</span> In-memory conversation list cache</p>
-      <p><span class="tag-green">✓</span> Multi-stage Docker (non-root)</p>
-      <p><span class="tag-green">✓</span> GitHub Actions CI (lint + test)</p>
-      <p><span class="tag-green">✓</span> Next.js 15 frontend + shadcn/ui</p>
-      <p><span class="tag-green">✓</span> 40 unit tests · TDD throughout</p>
+    <div style="font-size:.78rem">
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> JWT auth — register + login</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> SSE streaming · typing animation</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> RAG — pgvector + Gemini embeddings</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Document library + attach / detach</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Sliding window + summarization strategies</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Daily token limit (100k/day · 429)</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Exponential backoff retry (3×)</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> In-memory cache · invalidation</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Markdown rendering · toast notifications</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> Multi-stage Docker (non-root)</p>
+      <p style="margin-bottom:.3em"><span class="tag-green">✓</span> GitHub Actions CI · 40 tests TDD</p>
     </div>
   </div>
-  <br/>
-  <div style="display:flex; justify-content:center; gap:1em; flex-wrap:wrap">
+  <div style="display:flex; justify-content:center; gap:.8em; flex-wrap:wrap; margin-top:.8em">
     <span class="badge">NestJS</span>
     <span class="badge">PostgreSQL + pgvector</span>
     <span class="badge">Gemini 2.5 Flash</span>

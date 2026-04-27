@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { NotFoundException } from '@nestjs/common';
 import { DocumentsService } from './documents.service';
 import { Document } from './document.entity';
+import { ConversationDocument } from './conversation-document.entity';
 import { AiService } from '../ai/ai.service';
 
 jest.mock('@aws-sdk/client-s3', () => ({
@@ -12,6 +13,13 @@ jest.mock('@aws-sdk/client-s3', () => ({
 }));
 
 const mockDocRepo = {
+  create: jest.fn(),
+  save: jest.fn(),
+  findOne: jest.fn(),
+  find: jest.fn(),
+  delete: jest.fn(),
+};
+const mockConvDocRepo = {
   create: jest.fn(),
   save: jest.fn(),
   findOne: jest.fn(),
@@ -33,6 +41,7 @@ describe('DocumentsService', () => {
       providers: [
         DocumentsService,
         { provide: getRepositoryToken(Document), useValue: mockDocRepo },
+        { provide: getRepositoryToken(ConversationDocument), useValue: mockConvDocRepo },
         { provide: AiService, useValue: mockAi },
         { provide: ConfigService, useValue: mockConfig },
       ],

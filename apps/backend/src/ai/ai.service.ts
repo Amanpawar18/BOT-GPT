@@ -131,18 +131,25 @@ export class AiService implements OnModuleInit {
   }
 
   async retrieveRelevantDocs(
-    conversationId: string,
+    documentIds: string[],
     query: string,
     topK = 5,
   ): Promise<DocSource[]> {
-    const docs = await this.vectorStore.similaritySearch(query, topK, {
-      conversation_id: conversationId,
-    });
-    return docs.map((d) => ({
-      content: d.pageContent,
-      documentId: d.metadata.document_id as string,
-      filename: d.metadata.filename as string,
-    }));
+    if (!documentIds.length) return [];
+    const perDoc = Math.max(1, Math.ceil(topK / documentIds.length));
+    const nested = await Promise.all(
+      documentIds.map((id) =>
+        this.vectorStore.similaritySearch(query, perDoc, { document_id: id }),
+      ),
+    );
+    return nested
+      .flat()
+      .slice(0, topK)
+      .map((d) => ({
+        content: d.pageContent,
+        documentId: d.metadata.document_id as string,
+        filename: d.metadata.filename as string,
+      }));
   }
 
   async summarizeHistory(

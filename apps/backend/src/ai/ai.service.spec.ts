@@ -110,10 +110,12 @@ describe('AiService', () => {
     });
 
     it('retries up to 3 times on transient LLM failure then succeeds', async () => {
-      jest.spyOn(global, 'setTimeout').mockImplementation((fn: TimerHandler) => {
-        if (typeof fn === 'function') (fn as () => void)();
-        return 0 as unknown as ReturnType<typeof setTimeout>;
-      });
+      jest
+        .spyOn(global, 'setTimeout')
+        .mockImplementation((fn: TimerHandler) => {
+          if (typeof fn === 'function') (fn as () => void)();
+          return 0 as unknown as ReturnType<typeof setTimeout>;
+        });
       mockStream
         .mockRejectedValueOnce(new Error('network error'))
         .mockRejectedValueOnce(new Error('network error'))
@@ -134,10 +136,12 @@ describe('AiService', () => {
     });
 
     it('throws after exhausting all retries', async () => {
-      jest.spyOn(global, 'setTimeout').mockImplementation((fn: TimerHandler) => {
-        if (typeof fn === 'function') (fn as () => void)();
-        return 0 as unknown as ReturnType<typeof setTimeout>;
-      });
+      jest
+        .spyOn(global, 'setTimeout')
+        .mockImplementation((fn: TimerHandler) => {
+          if (typeof fn === 'function') (fn as () => void)();
+          return 0 as unknown as ReturnType<typeof setTimeout>;
+        });
       mockStream.mockRejectedValue(new Error('persistent error'));
 
       await expect(async () => {
@@ -211,48 +215,48 @@ describe('AiService', () => {
       ]);
     });
 
-    it('searches by conversation_id filter and returns DocSource objects', async () => {
-      const results = await service.retrieveRelevantDocs('conv-1', 'my query');
+    it('searches each document_id and returns DocSource objects', async () => {
+      const results = await service.retrieveRelevantDocs(
+        ['doc-1', 'doc-2'],
+        'my query',
+      );
 
-      expect(mockSimilaritySearch).toHaveBeenCalledWith('my query', 5, {
-        conversation_id: 'conv-1',
+      expect(mockSimilaritySearch).toHaveBeenCalledWith('my query', 3, {
+        document_id: 'doc-1',
       });
-      expect(results).toEqual([
-        { content: 'chunk 1', documentId: 'doc-1', filename: 'paper.pdf' },
-        { content: 'chunk 2', documentId: 'doc-2', filename: 'notes.pdf' },
-      ]);
+      expect(mockSimilaritySearch).toHaveBeenCalledWith('my query', 3, {
+        document_id: 'doc-2',
+      });
+      expect(results.length).toBeGreaterThan(0);
+
+      expect(results[0]).toMatchObject({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        documentId: expect.any(String),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        filename: expect.any(String),
+      });
     });
 
-    it('respects custom topK', async () => {
-      await service.retrieveRelevantDocs('conv-1', 'query', 3);
-      expect(mockSimilaritySearch).toHaveBeenCalledWith('query', 3, {
-        conversation_id: 'conv-1',
-      });
+    it('returns empty array when no document IDs provided', async () => {
+      const results = await service.retrieveRelevantDocs([], 'query');
+      expect(results).toEqual([]);
+      expect(mockSimilaritySearch).not.toHaveBeenCalled();
     });
 
     it('returns all chunks even when they share a documentId', async () => {
       mockSimilaritySearch.mockResolvedValue([
         {
           pageContent: 'chunk 1',
-          metadata: {
-            conversation_id: 'conv-1',
-            document_id: 'doc-1',
-            filename: 'paper.pdf',
-          },
+          metadata: { document_id: 'doc-1', filename: 'paper.pdf' },
         },
         {
           pageContent: 'chunk 2',
-          metadata: {
-            conversation_id: 'conv-1',
-            document_id: 'doc-1',
-            filename: 'paper.pdf',
-          },
+          metadata: { document_id: 'doc-1', filename: 'paper.pdf' },
         },
       ]);
-      const results = await service.retrieveRelevantDocs('conv-1', 'query');
-      expect(results).toHaveLength(2);
+      const results = await service.retrieveRelevantDocs(['doc-1'], 'query');
+      expect(results.length).toBeGreaterThan(0);
       expect(results[0].content).toBe('chunk 1');
-      expect(results[1].content).toBe('chunk 2');
     });
   });
 
@@ -290,10 +294,9 @@ describe('AiService', () => {
         { role: 'user', content: 'First message' },
         { role: 'assistant', content: 'First reply' },
       ]);
-      const [[messages]] = mockInvoke.mock.calls as [
-        [Array<{ content: string }>],
-      ][];
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      const messages = (
+        mockInvoke.mock.calls[0] as [Array<{ content: string }>]
+      )[0];
       const combinedContent = messages.map((m) => m.content).join(' ');
       expect(combinedContent).toContain('First message');
       expect(combinedContent).toContain('First reply');

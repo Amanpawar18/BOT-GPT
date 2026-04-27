@@ -70,8 +70,23 @@ export interface Message {
   sources?: DocSource[];
 }
 
+interface RawMessage extends Omit<Message, 'tokenCount' | 'sources'> {
+  token_count?: number;
+  sources?: Array<{ documentId: string; filename: string }>;
+}
+
 export interface ConversationDetail extends Conversation {
   messages: Message[];
+}
+
+export interface TokenUsage {
+  used: number;
+  limit: number;
+  resetAt: string;
+}
+
+export async function getTokenUsage(): Promise<TokenUsage> {
+  return request<TokenUsage>('/conversations/token-usage');
 }
 
 export async function getConversations(): Promise<Conversation[]> {
@@ -93,7 +108,15 @@ export async function createConversation(
 export async function getConversation(
   id: string,
 ): Promise<ConversationDetail> {
-  return request<ConversationDetail>(`/conversations/${id}`);
+  const data = await request<Omit<ConversationDetail, 'messages'> & { messages: RawMessage[] }>(`/conversations/${id}`);
+  return {
+    ...data,
+    messages: data.messages.map((m) => ({
+      ...m,
+      tokenCount: m.token_count ?? 0,
+      sources: m.sources ?? undefined,
+    })),
+  };
 }
 
 export async function deleteConversation(id: string): Promise<void> {
@@ -195,24 +218,15 @@ export async function streamMessage(
 export async function uploadDocument(
   conversationId: string,
   file: File,
-): Promise<void> {
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetch(`${API_BASE}/documents/${conversationId}`, {
-    method: 'POST',
-    headers: authHeaders(),
-    body: formData,
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `HTTP ${res.status}`);
-  }
+): Promise<Document> {
+  const doc = await uploadDocumentToLibrary(file);
+  await attachDocument(conversationId, doc.id);
+  return doc;
 }
 
 export interface Document {
   id: string;
   user_id: string;
-  conversation_id: string;
   filename: string;
   r2_url: string;
   status: 'processing' | 'ready' | 'failed';
@@ -223,8 +237,41 @@ export async function getDocuments(): Promise<Document[]> {
   return request<Document[]>('/documents');
 }
 
+export async function uploadDocumentToLibrary(file: File): Promise<Document> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${API_BASE}/documents`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: formData,
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `HTTP ${res.status}`);
+  }
+  return res.json() as Promise<Document>;
+}
+
 export async function deleteDocument(id: string): Promise<void> {
   await fetch(`${API_BASE}/documents/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  });
+}
+
+export async function getConversationDocuments(convId: string): Promise<Document[]> {
+  return request<Document[]>(`/conversations/${convId}/documents`);
+}
+
+export async function attachDocument(convId: string, docId: string): Promise<void> {
+  await fetch(`${API_BASE}/conversations/${convId}/documents/${docId}`, {
+    method: 'POST',
+    headers: authHeaders(),
+  });
+}
+
+export async function detachDocument(convId: string, docId: string): Promise<void> {
+  await fetch(`${API_BASE}/conversations/${convId}/documents/${docId}`, {
     method: 'DELETE',
     headers: authHeaders(),
   });
