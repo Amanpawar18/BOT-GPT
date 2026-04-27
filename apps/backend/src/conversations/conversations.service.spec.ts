@@ -4,7 +4,6 @@ import { ConversationsService } from './conversations.service';
 import { Conversation } from './conversation.entity';
 import { Message } from './message.entity';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
-import { jest } from '@jest/globals';
 
 const mockConv = {
   id: 'c-1',
@@ -194,12 +193,11 @@ describe('ConversationsService', () => {
         'conv.user_id = :userId',
         { userId: 'u-1' },
       );
-      const andWhereCalls = mockQueryBuilder.andWhere.mock.calls as [string, unknown][];
+      const andWhereCalls = mockQueryBuilder.andWhere.mock.calls as [
+        string,
+        unknown,
+      ][];
       expect(andWhereCalls.some(([q]) => q.includes('created_at'))).toBe(true);
     });
   });
 });
-function expect(arg0: boolean) {
-  throw new Error('Function not implemented.');
-}
-
