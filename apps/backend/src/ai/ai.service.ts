@@ -111,6 +111,7 @@ export class AiService implements OnModuleInit {
     sources: DocSource[],
   ): AsyncGenerator<string> {
     const contextBlock = `Context:\n${sources.map((s) => s.content).join('\n---\n')}\n\nUsing only the context above, answer:\n${currentMessage}`;
+    // const contextBlock = `Relevant document excerpts:\n${sources.map((s) => s.content).join('\n---\n')}\n\nAnswer the question below using the document excerpts as your primary source. Use the conversation history for context on follow-up questions.\nQuestion: ${currentMessage}`;
     const messages = this.buildMessages(history, contextBlock);
     const stream = await this.withRetry(() => this.llm.stream(messages));
     for await (const chunk of stream) {

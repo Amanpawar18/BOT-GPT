@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { FileText, LogOut, Plus } from 'lucide-react';
+import { FileText, List, LogOut } from 'lucide-react';
 import { ConversationItem } from '@/components/conversation-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -84,7 +84,7 @@ export function Sidebar({ conversations }: Props) {
           aria-label="New chat"
           onClick={() => router.push('/conversations')}
         >
-          <Plus className="h-4 w-4" />
+          <List className="h-4 w-4" />
         </Button>
       </div>
 

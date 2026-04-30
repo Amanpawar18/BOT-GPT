@@ -288,7 +288,75 @@ td     { padding:.38em .8em; border-bottom:1px solid var(--border); color:#e2e8f
   </div>
 </section>
 
-<!-- ═══ SLIDE 4 — Auth + Data Model ═══ -->
+<!-- ═══ SLIDE 4 — Why This Stack? ═══ -->
+<section>
+  <h2>Why This Stack?</h2>
+
+  <!-- Tech layers in the request flow -->
+  <div style="display:flex; align-items:center; justify-content:center; gap:.4em; margin-bottom:.5em; font-size:.8rem; flex-wrap:nowrap">
+    <div class="pipe-node" style="background:#0d1117; border-color:#4a5568; color:#a0aec0">Browser</div>
+    <span class="pipe-arrow">→</span>
+    <div class="pipe-node tag-blue">① Next.js 15</div>
+    <span class="pipe-arrow">→</span>
+    <div class="pipe-node tag-purple">② NestJS + JWT</div>
+    <span class="pipe-arrow">→</span>
+    <div class="pipe-node tag-yellow">③ PostgreSQL + pgvector</div>
+    <span class="pipe-arrow">+</span>
+    <div class="pipe-node tag-teal">Cloudflare R2</div>
+    <span class="pipe-arrow">→</span>
+    <div class="pipe-node tag-purple">④ Gemini via LangChain</div>
+  </div>
+  <p class="muted" style="text-align:center; font-size:.75rem; margin-bottom:.65em">Each layer — why this choice over the alternative.</p>
+
+  <div class="three-col" style="gap:.85em">
+    <div class="card">
+      <h4><span class="tag-blue">① Frontend</span>&ensp;&mdash;&ensp;Next.js 15</h4>
+      <div class="pipe-row" style="margin:.4em 0 .1em">
+        <span class="pipe-node">Native fetch streaming</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">SSE without extra libs</span>
+      </div>
+      <p class="muted" style="font-size:.72rem; margin:0 0 .3em .1em">No manual chunk parsing — browser handles reconnect too</p>
+      <div class="pipe-row" style="margin-bottom:.1em">
+        <span class="pipe-node">App Router</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">clean auth / app split</span>
+      </div>
+      <p class="muted" style="font-size:.72rem; margin:0 0 0 .1em">Instead of: React + Vite (manual routing + SSE wiring)</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag-purple">② Backend &amp; Auth</span>&ensp;&mdash;&ensp;NestJS + JWT</h4>
+      <div class="pipe-row" style="margin:.4em 0 .1em">
+        <span class="pipe-node">Decorators + DI</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">guards → controllers → services</span>
+      </div>
+      <p class="muted" style="font-size:.72rem; margin:0 0 .3em .1em">Auth pipeline is structural, not hand-wired middleware</p>
+      <div class="pipe-row" style="margin-bottom:.1em">
+        <span class="pipe-node">Stateless JWT</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">no session store needed</span>
+      </div>
+      <p class="muted" style="font-size:.72rem; margin:0 0 0 .1em">Instead of: Express (all manual) + Redis session store</p>
+    </div>
+    <div class="card">
+      <h4><span class="tag-yellow">③④ Data &amp; AI</span>&ensp;&mdash;&ensp;Postgres + LangChain</h4>
+      <div class="pipe-row" style="margin:.4em 0 .1em">
+        <span class="pipe-node">PostgreSQL + pgvector</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">ACID + vectors, one DB</span>
+      </div>
+      <p class="muted" style="font-size:.72rem; margin:0 0 .3em .1em">Delete doc + embeddings atomically — no orphaned data</p>
+      <div class="pipe-row" style="margin-bottom:.1em">
+        <span class="pipe-node">LangChain + Gemini</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">one SDK: chat + embed + store</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SLIDE 5 — Auth + Data Model ═══ -->
 <section>
   <h2>Auth + Data Model</h2>
   <div class="two-col" style="align-items:start">
@@ -334,7 +402,7 @@ doc_embeddings     (id, content, vector(768),
   </div>
 </section>
 
-<!-- ═══ SLIDE 5 — SSE Streaming ═══ -->
+<!-- ═══ SLIDE 6 — SSE Streaming ═══ -->
 <section>
   <h2>LLM Streaming via SSE</h2>
   <div class="split-55">
@@ -377,7 +445,7 @@ doc_embeddings     (id, content, vector(768),
   </div>
 </section>
 
-<!-- ═══ SLIDE 6 — Context Strategies ═══ -->
+<!-- ═══ SLIDE 7 — Context Strategies ═══ -->
 <section>
   <h2>Context Strategies</h2>
   <div class="two-col" style="align-items:start">
@@ -423,13 +491,13 @@ window = [msg₃, msg₄, msg₅]  chronological
       </div>
       <div class="card" style="margin-top:.5em">
         <h4>Trade-off</h4>
-        <p>1 extra LLM call per request when history is long, but preserves semantic content of old turns (80-90% token reduction).</p>
+        <p>1 extra LLM call per request when history is long, but preserves semantic content of old turns.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SLIDE 7 — RAG Pipeline ═══ -->
+<!-- ═══ SLIDE 8 — RAG Pipeline ═══ -->
 <section>
   <h2>RAG Pipeline</h2>
   <div class="two-col" style="align-items:start">
@@ -498,8 +566,8 @@ window = [msg₃, msg₄, msg₅]  chronological
   </div>
 </section>
 
-<!-- ═══ SLIDE 8 — Document Library ═══ -->
-<section>
+<!-- ═══ SLIDE 9 — Document Library ═══ -->
+<!-- <section>
   <h2>Document Library</h2>
   <div class="split-55" style="align-items:start">
     <div>
@@ -527,9 +595,9 @@ window = [msg₃, msg₄, msg₅]  chronological
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
-<!-- ═══ SLIDE 9 — Reliability ═══ -->
+<!-- ═══ SLIDE 10 — Reliability ═══ -->
 <section>
   <h2>Reliability &amp; Cost Controls</h2>
   <div class="three-col" style="align-items:start">
@@ -602,7 +670,7 @@ Invalidation:
   </div>
 </section>
 
-<!-- ═══ SLIDE 10 — Testing ═══ -->
+<!-- ═══ SLIDE 11 — Testing ═══ -->
 <section>
   <h2>Testing: TDD Throughout</h2>
   <p style="font-size:.8rem">RED → GREEN → commit. 40 tests · 5 suites · &lt;2 s. Zero network or DB needed.</p>
@@ -634,7 +702,7 @@ Invalidation:
   </div>
 </section>
 
-<!-- ═══ SLIDE 11 — Docker + CI ═══ -->
+<!-- ═══ SLIDE 12 — Docker + CI ═══ -->
 <section>
   <h2>Docker + CI</h2>
   <div class="two-col" style="align-items:start">
@@ -681,15 +749,61 @@ jobs:
         <h4>Lint + test in parallel</h4>
         <p>Two independent jobs run concurrently on every push and PR. Blocks merge on any failure.</p>
       </div>
-      <div class="card" style="margin-top:.5em">
-        <h4>docker-compose</h4>
-        <p><code>docker-compose up --build</code> starts postgres (pgvector) + backend together.</p>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SLIDE 12 — Scalability + Summary ═══ -->
+<!-- ═══ SLIDE 13 — Scaling to 10M Daily Users ═══ -->
+<section>
+  <h2>Scaling to 10M Daily Users</h2>
+  <p style="text-align:center; font-size:.85rem; margin-bottom:.6em; color:var(--dim)">
+    10M users × 10 messages/day &nbsp;=&nbsp;
+    <strong style="color:#e2e8f0">~1,200 req/s average</strong> &nbsp;·&nbsp;
+    <strong style="color:#e2e8f0">~5,000 req/s peak</strong>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:12%">Layer</th>
+        <th style="width:28%">Today (this build)</th>
+        <th style="width:4%; text-align:center; color:var(--accent2)">→</th>
+        <th style="width:56%">At 10M users</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tag-blue">API</span></td>
+        <td class="muted">1 NestJS instance</td>
+        <td style="text-align:center; color:var(--accent2)">→</td>
+        <td>20–50 pods · Kubernetes auto-scales · stateless JWT = any pod handles any request</td>
+      </tr>
+      <tr>
+        <td><span class="tag-yellow">Database</span></td>
+        <td class="muted">Single Postgres</td>
+        <td style="text-align:center; color:var(--accent2)">→</td>
+        <td>Primary (writes) + Read Replicas (reads) + PgBouncer connection pooling</td>
+      </tr>
+      <tr>
+        <td><span class="tag-green">Cache</span></td>
+        <td class="muted">In-memory per pod</td>
+        <td style="text-align:center; color:var(--accent2)">→</td>
+        <td>Redis cluster · 1-line config swap · shared across all pods · zero code changes</td>
+      </tr>
+      <tr>
+        <td><span class="tag-red">LLM</span></td>
+        <td class="muted">Direct Gemini calls</td>
+        <td style="text-align:center; color:var(--accent2)">→</td>
+        <td>Cache repeated answers · BullMQ async embedding queue · API key rotation</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="hl-box" style="margin-top:.65em; text-align:center">
+    <span class="tag-green">Zero application code changes.</span>&ensp;
+    Scaling is infra configuration — the app was designed stateless from day 1.
+  </div>
+</section>
+
+<!-- ═══ SLIDE 14 — Scalability + Summary ═══ -->
 <section data-background-gradient="radial-gradient(ellipse at bottom, #1a0533 0%, #0d1117 70%)">
   <h2>Scalability &amp; Summary</h2>
   <div class="two-col" style="align-items:start">
@@ -758,9 +872,9 @@ Reveal.initialize({
   fragments: true,
 });
 
-// Re-trigger token stream animation on every visit to slide 6
+// Re-trigger token stream animation on every visit to "LLM Streaming via SSE" (slide 6, indexh=5)
 Reveal.on('slidechanged', ({ indexh }) => {
-  if (indexh === 5) { // 0-indexed slide 6
+  if (indexh === 5) {
     const spans = document.querySelectorAll('.token-stream span');
     spans.forEach(s => {
       s.style.animation = 'none';

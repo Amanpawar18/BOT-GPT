@@ -110,7 +110,7 @@ export class ConversationsController {
     @Query('page') page = '1',
     @Query('limit') limit = '20',
   ) {
-    const cacheKey = `convlist:${req.user.id}:${page}:${limit}`;
+    const cacheKey = `convlist:${req.user.id}`;
     const cached = await this.cache.get(cacheKey);
     if (cached) return cached;
     const result = await this.conversationsService.findAll(

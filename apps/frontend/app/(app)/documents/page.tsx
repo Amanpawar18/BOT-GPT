@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { FileText, Trash2, Upload, FolderOpen, Loader2, Eye } from 'lucide-react';
+import { FileText, Trash2, Upload, FolderOpen, Loader2, Eye, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -82,7 +82,7 @@ export default function DocumentsPage() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       <header className="px-6 py-4 border-b border-border flex items-center justify-between shrink-0">
         <div>
           <h1 className="text-lg font-semibold text-foreground">Documents</h1>
@@ -129,7 +129,8 @@ export default function DocumentsPage() {
         </Dialog>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 flex min-h-0">
+      <div className={`${previewDoc ? 'w-80 shrink-0 border-r border-border' : 'flex-1'} overflow-y-auto px-6 py-6`}>
         {loading ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
@@ -231,24 +232,33 @@ export default function DocumentsPage() {
         )}
       </div>
 
-      {/* PDF preview modal */}
-      <Dialog open={!!previewDoc} onOpenChange={(o) => !o && setPreviewDoc(null)}>
-        <DialogContent className="bg-card border-border max-w-4xl w-full h-[80vh] flex flex-col p-0 gap-0">
-          <DialogHeader className="px-4 py-3 border-b border-border shrink-0">
-            <DialogTitle className="text-sm font-medium flex items-center gap-2">
-              <FileText className="h-4 w-4 text-zinc-400" />
-              {previewDoc?.filename}
-            </DialogTitle>
-          </DialogHeader>
-          {previewDoc?.r2_url && (
+      {/* PDF preview panel */}
+      {previewDoc && (
+        <div className="flex-1 flex flex-col min-h-0 min-w-0">
+          <div className="px-4 py-3 border-b border-border flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <FileText className="h-4 w-4 text-zinc-400 shrink-0" />
+              <span className="text-sm font-medium truncate">{previewDoc.filename}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 shrink-0 text-zinc-500 hover:text-zinc-200"
+              onClick={() => setPreviewDoc(null)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          {previewDoc.r2_url && (
             <iframe
               src={previewDoc.r2_url}
-              className="flex-1 w-full border-0 rounded-b-lg"
+              className="flex-1 w-full border-0 min-h-0"
               title={previewDoc.filename}
             />
           )}
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
+      </div>
     </div>
   );
 }

@@ -12,6 +12,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     getConversations().then(setConversations).catch(console.error);
   }, [pathname]);
 
+  useEffect(() => {
+    function onUpdate() {
+      getConversations().then(setConversations).catch(console.error);
+    }
+    window.addEventListener('botgpt:conversations-updated', onUpdate);
+    return () => window.removeEventListener('botgpt:conversations-updated', onUpdate);
+  }, []);
+
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       <Sidebar conversations={conversations} />

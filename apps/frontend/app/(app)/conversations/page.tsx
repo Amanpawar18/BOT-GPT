@@ -62,6 +62,7 @@ export default function ConversationsPage() {
     e.preventDefault();
     await deleteConversation(id);
     setConversations((prev) => prev.filter((c) => c.id !== id));
+    window.dispatchEvent(new CustomEvent('botgpt:conversations-updated'));
   }
 
   return (
